@@ -139,7 +139,7 @@ In the source directory,
 
 #### Modify the Kubernetes configuration scripts
 
-If there is any change in network topology, need to modify the configuration files (.yaml files) appropriately. The configuration files are located in `artifacts` and `configFiles` directory. For example, if you decide to increase/decrease the capacity of persistant volume then you need to modify `createVolume.yaml`.
+If there is any change in network topology, need to modify the configuration files (.yaml files) appropriately. The configuration files are located in `artifacts` and `configFiles` directory. For example, if you decide to increase/decrease the capacity of persistent volume then you need to modify `createVolume.yaml`.
 
 If the Kubernetes' Server version is **v1.11.x** or above, the cluster may be using `containerd` as its container runtime therefore using `docker.sock` of the worker node is not possible. You could deploy and use a Docker daemon in a container.
 > In IKS v1.11.x and above, it is using `containerd`
@@ -156,7 +156,27 @@ $ sed -i s#unix:///host/var/run/docker.sock#tcp://docker:2375# configFiles/peers
 
 #### Run the script to deploy your Hyperledger Fabric Network
 
-Once you have completed the changes (if any) in configuration files, you are ready to deploy your network. Execute the script to deploy your hyperledger fabric network.
+Once you have completed the changes (if any) in configuration files, you are ready to deploy your network. 
+
+Check your kubectl CLI version as:
+
+```
+$ kubectl version --short
+```
+
+This command will give you `Client Version` and `Server Version`. 
+If the `Client version > v1.11.x` i.e. 1.12.x or more then use `setup_blockchainNetwork_v2.sh` to set up the network. Run the following command:
+
+```
+cp setup_blockchainNetwork_v2.sh setup_blockchainNetwork.sh
+```
+
+If the `Client version <= v1.11.x` then use `setup_blockchainNetwork_v1.sh` to setup the network. Copy the script as shown.
+```
+cp setup_blockchainNetwork_v1.sh setup_blockchainNetwork.sh
+```
+
+Now execute the script to deploy your hyperledger fabric network.
 
   ```
   $ chmod +x setup_blockchainNetwork.sh
